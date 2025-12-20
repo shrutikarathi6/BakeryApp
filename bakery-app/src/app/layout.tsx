@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { CartProvider } from "@/context/CartContext";   
 import React from "react";
 
 export const metadata: Metadata = {
@@ -15,7 +16,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-gray-50">
-        {children}
+      <CartProvider> {children}</CartProvider> 
+      {/* {children} */}
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { PRODUCT_CATEGORIES } from "@/constants/productCategories"
 
 export default function AddProductModal({
   onClose,
@@ -44,38 +45,64 @@ export default function AddProductModal({
         </h2>
 
         <div className="space-y-3">
-          <input
-            className="form-input"
-            placeholder="Item name"
-            onChange={(e) =>
-              setForm({ ...form, name: e.target.value })
-            }
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Item Name
+            </label>
+            <input
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 outline-none"
+              placeholder="e.g. Chocolate Truffle Cake"
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Description
+            </label>
+            <textarea
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 outline-none resize-none h-24"
+              placeholder="A rich, moist chocolate cake topped with smooth truffle frosting..."
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+            />
+          </div>
 
-          <textarea
-            className="form-input"
-            placeholder="Description"
-            onChange={(e) =>
-              setForm({ ...form, description: e.target.value })
-            }
-          />
+          {/* Category */}
+         <div>
+  <label className="block text-sm font-medium text-gray-700 mb-2">
+    Category
+  </label>
 
-          <input
-            className="form-input"
-            placeholder="Category (Cake, Bread, Pastry)"
-            onChange={(e) =>
-              setForm({ ...form, category: e.target.value })
-            }
-          />
+  <select
+    className="w-full px-4 py-3 rounded-xl border-2 border-gray-200
+      focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100
+      transition-all duration-300 outline-none bg-white"
+    value={form.category}
+    onChange={(e) =>
+      setForm({ ...form, category: e.target.value })
+    }
+  >
+    <option value="">Select category</option>
 
-          <input
-            type="number"
-            className="form-input"
-            placeholder="Price"
-            onChange={(e) =>
-              setForm({ ...form, price: e.target.value })
-            }
-          />
+    {PRODUCT_CATEGORIES.map((cat) => (
+      <option key={cat} value={cat}>
+        {cat}
+      </option>
+    ))}
+  </select>
+</div>
+
+          {/* Price */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Price (₹)
+            </label>
+            <input
+              type="number"
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 transition-all duration-300 outline-none"
+              placeholder="e.g. 499"
+              onChange={(e) => setForm({ ...form, price: e.target.value })}
+            />
+          </div>
 
           <input
             type="file"
@@ -84,6 +111,7 @@ export default function AddProductModal({
               e.target.files && handleImage(e.target.files[0])
             }
           />
+          
         </div>
 
         <div className="flex justify-end gap-3 mt-5">

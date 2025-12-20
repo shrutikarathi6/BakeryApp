@@ -24,7 +24,7 @@ export async function POST(req: Request) {
       image,
     });
 
-    console.log("product is :", product);
+   
 
     return NextResponse.json({ success: true, product });
   } catch (error) {

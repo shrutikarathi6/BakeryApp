@@ -5,7 +5,7 @@ import { verifyOtp } from "@/lib/otp";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { phone, otp } = await req.json();
+  const { phone, otp ,role} = await req.json();
 
   if (!verifyOtp(otp)) {
     return NextResponse.json({ error: "Invalid OTP" }, { status: 401 });
@@ -19,11 +19,24 @@ export async function POST(req: Request) {
     { new: true }
   );
 
-  const token = signToken({ userId: user._id, role: user.role });
+  
+  if (!user) {
+    return NextResponse.json(
+      { success: false, error: "User not found" },
+      { status: 404 }
+    );
+  }
+
+  const token = signToken({
+    userId: user._id.toString(),
+    role: user.role,
+  });
 
   return NextResponse.json({
     success: true,
     token,
     role: user.role,
+    userId: user._id.toString(), // 🔥 IMPORTANT
   });
+
 }

@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import { Cake, ShoppingCart } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import logo from "@/constants/logo.jpeg"
+
 
 export default function UserNavbar() {
   const router = useRouter();
@@ -10,44 +12,27 @@ export default function UserNavbar() {
   const { cart } = useCart();
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md shadow-md border-b border-pink-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+    <nav className="navbar">
+      <div className="navbar-container">
+        <div className="navbar-inner">
           {/* Logo & Brand */}
-          <div className="flex items-center gap-3">
-            <Cake className="w-10 h-10 text-rose-600 drop-shadow-md" strokeWidth={2} />
-
-            <h1 className="text-2xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-rose-600 to-pink-500 bg-clip-text text-transparent">
-                Shrutika's
-              </span>{" "}
-              <span className="text-gray-800">Bakery</span>
-            </h1>
+          <div className="navbar-logo">
+            <img
+              src={logo.src}
+              alt="KABRA'S BAKE WORLD Logo"
+              className="navbar-logo-img"
+            />
           </div>
 
           {/* Navigation Links */}
-          <div className="flex items-center gap-10">
+          <div className="navbar-tabs">
             <button
               onClick={() => router.push("/dashboard")}
-              className={`
-            relative px-4 py-2 text-sm font-medium uppercase tracking-wider rounded-lg
-            transition-all duration-300
-            ${pathname === "/dashboard"
-                  ? "text-rose-600 bg-rose-50"
-                  : "text-gray-600 hover:text-rose-600 hover:bg-rose-50"
-                }
-          `}
+              className={`navbar-tab ${pathname === "/dashboard"} ? "active" : ""}`}
             >
               Available Products
+              <span className="navbar-tab-indicator" />
 
-              {/* Animated Active Indicator */}
-              <span
-                className={`
-              absolute bottom-0 left-0 w-full h-1 bg-rose-500 rounded-full
-              transition-transform duration-300 origin-left
-              ${pathname === "/dashboard" ? "scale-x-100" : "scale-x-0"}
-            `}
-              />
             </button>
 
             <button

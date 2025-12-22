@@ -1,6 +1,6 @@
 export const PRODUCT_CATEGORIES = [
-  "Cake",
-  "Bread",
+  "Cakes",
+  "Breads",
   "Pastry",
   "Cookies",
   "Donuts",

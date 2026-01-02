@@ -4,7 +4,6 @@ import { X, CreditCard, ShoppingBag, User, Phone, Mail, MapPin } from "lucide-re
 import { useState } from "react";
 import {useCart} from "@/context/CartContext";
 
-
 export default function CheckoutModal({
   total,
   onClose,

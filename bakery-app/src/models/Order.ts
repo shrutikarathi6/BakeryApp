@@ -25,12 +25,13 @@ const OrderSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["PLACED", "ACCEPTED", "PREPARED"],
+      enum: ["PLACED", "ACCEPTED", "PREPARED","REJECTED","DELIEVERED"],
       default: "PLACED",
     },
 
     orderPlacedAt: { type: Date, default: Date.now },
     orderPreparedAt: { type: Date },
+    orderDeliveredAt: { type: Date },
   },
   { timestamps: true }
 );

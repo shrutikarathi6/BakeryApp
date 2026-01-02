@@ -572,3 +572,20 @@
   .dashboard-hero-text { max-width: 100%; text-align: center; }
   .dashboard-hero-img { max-width: 400px; margin: 0 auto; }
 }
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 60s linear infinite;
+}
+
+.hover\:pause-animation:hover {
+  animation-play-state: paused;
+}

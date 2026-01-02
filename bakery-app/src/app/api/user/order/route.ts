@@ -42,6 +42,18 @@ export async function POST(req: Request) {
     orderPlacedAt: new Date(),
   });
 
+  // 🔔 Emit real-time event
+  const io = (global as any).io;
+
+  if (io) {
+    io.emit("new-order", {
+      orderId: order._id,
+      createdAt: order.createdAt,
+    });
+  }
+
+
+
   return NextResponse.json({
     success: true,
     orderId: order._id,

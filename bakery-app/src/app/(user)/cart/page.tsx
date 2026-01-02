@@ -5,6 +5,7 @@ import UserNavbar from "../navbar/UserNavbar";
 import { useCart } from "@/context/CartContext";
 import CheckoutModal from "./CheckoutModal";
 import { ShoppingBag, Package } from "lucide-react";
+import breads from "@/constants/breads.png"
 
 export default function CartPage() {
   const { cart } = useCart(); // Assuming your context has a refreshCart function
@@ -19,7 +20,6 @@ export default function CartPage() {
     0
   );
 
-  console.log("Cart Items:", cart);
 
 
   return (
@@ -28,7 +28,7 @@ export default function CartPage() {
 
       {/* Warm bakery background */}
       <div
-        className="min-h-screen bg-[#FAF7F2] py-12 px-4"
+        className="min-h-screen bg-[#FAF7F2] py-6 px-4"
         style={{
           backgroundImage: "url('/cart-bg.jpg')", // Optional: add a cozy bakery image in public/
           backgroundSize: "cover",
@@ -44,7 +44,7 @@ export default function CartPage() {
           {cart.length === 0 ? (
             <div className="text-center py-20 bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl">
               <img
-                src="/empty-cart.png" // Optional cute illustration
+                src={breads.src} // Optional cute illustration
                 alt="Empty Cart"
                 className="w-64 mx-auto mb-8 opacity-80"
               />

@@ -11,6 +11,12 @@ export default function UserNavbar() {
   const pathname = usePathname();
   const { cart } = useCart();
 
+  
+  const navItems = [
+    { label: "Available Products", path: "/dashboard" },
+    { label: "Cart", path: "/cart" },
+  ];
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -26,7 +32,17 @@ export default function UserNavbar() {
 
           {/* Navigation Links */}
           <div className="navbar-tabs">
-            <button
+             {navItems.map((item) => (
+              <button
+                key={item.path}
+                onClick={() => router.push(item.path)}
+                className={`navbar-tab ${pathname === item.path ? "active" : ""}`}
+              >
+                {item.label}
+                <span className="navbar-tab-indicator" />
+              </button>
+            ))}
+            {/* <button
               onClick={() => router.push("/dashboard")}
               className={`navbar-tab ${pathname === "/dashboard"} ? "active" : ""}`}
             >
@@ -63,7 +79,7 @@ export default function UserNavbar() {
               ${pathname === "/cart" ? "scale-x-100" : "scale-x-0"}
             `}
               />
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

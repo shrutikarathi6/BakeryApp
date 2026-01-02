@@ -33,6 +33,7 @@ export default function AddProductModal({
         price: Number(form.price),
       }),
     });
+    alert("Product added successfully!");
 
     onClose();
   };

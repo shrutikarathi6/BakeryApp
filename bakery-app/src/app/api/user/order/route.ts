@@ -4,30 +4,43 @@ import Order from "@/models/Order";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  const { userId, customer,total } = await req.json();
+  const { cart, customer, total } = await req.json();
 
-  await connectDB();
-
-  const cart = await Cart.findOne({ userId });
-
-  if (!cart || cart.items.length === 0) {
+  if (!cart || !Array.isArray(cart) || cart.length === 0) {
     return NextResponse.json(
       { error: "Cart is empty" },
       { status: 400 }
     );
   }
 
+  if (!customer?.name || !customer?.phone || !customer?.address) {
+    return NextResponse.json(
+      { error: "Missing customer details" },
+      { status: 400 }
+    );
+  }
+
+  await connectDB();
+
+  // 🔥 Transform cart items to DB-friendly format
+  const items = cart.map((item: any) => ({
+    productId: item.product._id,
+    quantity: item.quantity,
+  }));
 
   const order = await Order.create({
-    userId,
-    items: cart.items,
-    customer,
+    userId: customer.phone, // or any identifier you prefer
+    items,
+    customer: {
+      name: customer.name,
+      phone: customer.phone,
+      email: customer.email || "",
+      address: customer.address,
+    },
     totalAmount: total,
+    status: "PLACED",
+    orderPlacedAt: new Date(),
   });
-
-  // Clear cart after order placed
-  cart.items = [];
-  await cart.save();
 
   return NextResponse.json({
     success: true,

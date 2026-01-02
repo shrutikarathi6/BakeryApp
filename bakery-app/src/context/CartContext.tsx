@@ -2,59 +2,76 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
 
+type CartItem = {
+  product: any;
+  quantity: number;
+};
+
 const CartContext = createContext<any>(null);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<any[]>([]);
-    const [userId, setUserId] = useState<string | null>(null);
+  const [cart, setCart] = useState<CartItem[]>([]);
 
-  // ✅ Read localStorage ONLY on client
+  // Load cart from localStorage on first render
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const id = localStorage.getItem("userId");
-      if (id) setUserId(id);
+    const saved = localStorage.getItem("cart");
+    if (saved) {
+      setCart(JSON.parse(saved));
     }
   }, []);
 
+  // Persist cart to localStorage on change
   useEffect(() => {
-    if (!userId) return;
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
-    fetch("/api/user/cart/get", {
-      headers: { "x-user-id": userId },
-    })
-      .then((res) => res.json())
-      .then((data) => setCart(data.items));
-  }, [userId]);
-
-  const addToCart = async (productId: string) => {
-    await fetch("/api/user/cart/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, productId }),
-    });
-
+  const addToCart = (product: any) => {
     setCart((prev) => {
-      const item = prev.find(
-        (p: any) => p.productId._id === productId
+      const existing = prev.find(
+        (item) => item.product._id === product._id
       );
 
-      if (item) {
-        return prev.map((p: any) =>
-          p.productId._id === productId
-            ? { ...p, quantity: p.quantity + 1 }
-            : p
+      if (existing) {
+        return prev.map((item) =>
+          item.product._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
 
-      return [...prev, { productId: { _id: productId }, quantity: 1 }];
+     return [
+        ...prev,
+        {
+          product: {
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            category: product.category,
+          },
+          quantity: 1,
+        },
+      ];
     });
   };
 
+  // 🔥 IMPORTANT: clear cart
+  const clearCart = () => {
+    setCart([]);
+    localStorage.removeItem("cart");
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, clearCart }}>
       {children}
     </CartContext.Provider>
   );
 }
 
-export const useCart = () => useContext(CartContext);
+export function useCart() {
+  const ctx = useContext(CartContext);
+  if (!ctx) {
+    throw new Error("useCart must be used inside CartProvider");
+  }
+  return ctx;
+}

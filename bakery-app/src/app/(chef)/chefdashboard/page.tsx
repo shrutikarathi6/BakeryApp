@@ -1,10 +1,11 @@
 "use client";
 import { Clock, Package, CheckCircle2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef,useState } from "react";
 
 export default function ChefDashboard() {
   const [orders, setOrders] = useState<any[]>([]);
   const [loadingId, setLoadingId] = useState<string | null>(null);
+   
 
   const fetchOrders = async () => {
     const res = await fetch("/api/chef/order/get");
@@ -14,6 +15,8 @@ export default function ChefDashboard() {
 
   useEffect(() => {
     fetchOrders();
+    const interval = setInterval(fetchOrders, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   const markPrepared = async (orderId: string) => {
@@ -31,7 +34,7 @@ export default function ChefDashboard() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">
+   <h1 className="text-2xl font-bold mb-6">
         Chef Dashboard 👨‍🍳
       </h1>
 
@@ -89,13 +92,8 @@ export default function ChefDashboard() {
                     key={item._id}
                     className="flex gap-4 items-center border rounded-lg p-3"
                   >
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      className="h-20 w-20 object-cover rounded-lg"
-                    />
-
-                    <div className="flex-1">
+                  
+                    {/* <div className="flex-1">
                       <h3 className="font-semibold">
                         {p.name}
                       </h3>
@@ -107,16 +105,16 @@ export default function ChefDashboard() {
                       <p className="text-sm text-gray-500">
                         Price: ₹{p.price}
                       </p>
-                    </div>
+                    </div> */}
 
-                    <div className="text-right">
+                    {/* <div className="text-right">
                       <p className="font-semibold">
                         Qty: {item.quantity}
                       </p>
                       <p className="font-bold text-pink-600">
                         ₹{p.price * item.quantity}
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 );
               })}
